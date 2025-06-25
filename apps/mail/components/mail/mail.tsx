@@ -45,9 +45,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { useCategorySettings, useDefaultCategoryId } from '@/hooks/use-categories';
 import { useNavigate, useParams, useRevalidator, useLocation } from 'react-router';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useActiveConnection, useConnections } from '@/hooks/use-connections';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useCommandPalette } from '../context/command-palette-context';
 import { navigationConfig, bottomNavItems } from '@/config/navigation';
 import { useOptimisticActions } from '@/hooks/use-optimistic-actions';
@@ -97,6 +97,7 @@ import { useTranslations } from 'use-intl';
 import { SearchBar } from './search-bar';
 import { useTheme } from 'next-themes';
 import { FOLDERS } from '@/lib/utils';
+import type { IConnection } from '@/types';
 import { useQueryState } from 'nuqs';
 import { useAtom } from 'jotai';
 import { toast } from 'sonner';
@@ -425,6 +426,7 @@ export function MailLayout() {
   const { data: activeConnection } = useActiveConnection();
   const { open, setOpen, activeFilters, clearAllFilters } = useCommandPalette();
   const [focusedIndex, setFocusedIndex] = useAtom(focusedIndexAtom);
+  const { data: activeAccount } = useActiveConnection();
 
   useEffect(() => {
     if (prevFolderRef.current !== folder && mail.bulkSelected.length > 0) {
@@ -1235,9 +1237,11 @@ function BulkSelectActions() {
 
 export const Categories = () => {
   const t = useTranslations();
+  const defaultCategoryIdInner = useDefaultCategoryId();
   const categorySettings = useCategorySettings();
-  const defaultCategoryId = useDefaultCategoryId();
-  const [activeCategory] = useQueryState('category', { defaultValue: defaultCategoryId });
+  const [activeCategory] = useQueryState('category', {
+    defaultValue: defaultCategoryIdInner,
+  });
 
   const categories = categorySettings.map((cat) => {
     const base = {
@@ -1971,6 +1975,7 @@ function CategorySelect({ isMultiSelectMode }: { isMultiSelectMode: boolean }) {
   const activeTabElementRef = useRef<HTMLButtonElement>(null);
   const overlayContainerRef = useRef<HTMLDivElement>(null);
   const [textSize, setTextSize] = useState<'normal' | 'small' | 'xs' | 'hidden'>('normal');
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
 
   if (folder !== 'inbox') return <div className="h-8"></div>;
 

@@ -138,7 +138,10 @@
       "appTheme": "Toggle Theme",
       "accounts": "Accounts",
       "signIn": "Sign in",
-      "otherAccounts": "Other Accounts"
+      "otherAccounts": "Other Accounts",
+      "switchingAccounts": "Switching accounts...",
+      "accountSwitched": "Account switched successfully",
+      "failedToSwitchAccount": "Failed to switch accounts. Please try again."
     },
     "mailCategories": {
       "primary": "Primary",
@@ -401,7 +404,9 @@
         "zeroSignatureDescription": "Add a Zero signature to your emails.",
         "defaultEmailAlias": "Default Email Alias",
         "selectDefaultEmail": "Select default email",
-        "defaultEmailDescription": "This email will be used as the default 'From' address when composing new emails"
+        "defaultEmailDescription": "This email will be used as the default 'From' address when composing new emails",
+        "autoRead": "Auto Read",
+        "autoReadDescription": "Automatically mark emails as read when you click on them."
       },
       "connections": {
         "title": "Email Connections",
